@@ -14,22 +14,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 1. Install pnpm before NodeJS
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 9 # O la versión específica que prefieras
+          version: 9
+          run_install: false # With this, avoid to install before configure Node
 
+      # 2. Configure Node.js and link the cache to pnpm
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
+      # 3. Get the directory of pnpm
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      # 4. Install dependencies using lockfile
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # 5. Execute Makefile commands
       - name: Check formatting (Prettier)
-        run: pnpm run prettier_check
+        run: make format-check
 
       - name: Build application
-        run: pnpm run build
+        run: make build
