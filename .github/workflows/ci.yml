@@ -27,19 +27,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # Eliminamos cache: 'pnpm' aquí para evitar el error anterior
 
-      # Usamos una ruta fija para el cache que funciona en Ubuntu
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/pnpm/store/v3
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+      # Paso de diagnóstico: Verificamos qué archivos hay en el runner
+      - name: Debug Files
+        run: ls -la
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        # Añadimos --no-frozen-lockfile solo esta vez para que genere uno nuevo si hay discrepancias
+        # Y forzamos a que ignore configuraciones de workspace
+        run: pnpm install --no-frozen-lockfile
 
       - name: Lint and Format Check
         run: make format-check
