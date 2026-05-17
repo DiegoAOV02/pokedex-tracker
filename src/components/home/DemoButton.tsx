@@ -15,7 +15,7 @@ export function DemoButton() {
 
   return (
     <Button variant="outline" size="lg" onClick={handleStartDemo}>
-      Ver Demo
+      View a Demo
     </Button>
   );
 }

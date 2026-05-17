@@ -13,19 +13,19 @@ export default function LandingPage() {
       <section className="relative pt-32 pb-40 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-950">
         <div className="container mx-auto px-4 text-center max-w-4xl">
           <span className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold text-blue-600 dark:text-blue-400 bg-blue-100/50 dark:bg-blue-900/30 rounded-full">
-            Tu aventura, organizada
+            Your adventure, structured
           </span>
           <h1 className="text-6xl md:text-7xl font-black text-slate-900 dark:text-white mb-8">
-            Completa tu Pokédex de forma{' '}
-            <span className="text-blue-600 dark:text-blue-400">profesional</span>
+            Complete your Pokédex{' '}
+            <span className="text-blue-600 dark:text-blue-400">organized</span>
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto">
-            La herramienta definitiva para entrenadores. Gestiona tus juegos y visualiza tu progreso
-            con un diseño moderno.
+            The tool for poke-trainers. Manage your Pokémon games and visualize your progress with a
+            friendly design
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/login">
-              <Button size="lg">Comenzar Ahora</Button>
+              <Button size="lg">Begin your tracking</Button>
             </Link>
             <DemoButton />
           </div>
@@ -38,18 +38,18 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
               icon="🎮"
-              title="Multi-Generación"
-              description="Soporte completo desde Kanto hasta Paldea."
+              title="Multi-Generation"
+              description="In future updates, we will implement multi-generations. Currently working with the first Generation of Pokémon."
             />
             <FeatureCard
               icon="📊"
-              title="Estadísticas"
-              description="Visualiza tu progreso regional en tiempo real."
+              title="Stats"
+              description="Visualize your regional progress in real time."
             />
             <FeatureCard
               icon="🌙"
-              title="Modo Oscuro"
-              description="Diseñado para no cansar la vista en sesiones nocturnas."
+              title="Dark Mode"
+              description="Design to reduce eye strain during night time use."
             />
           </div>
         </div>
