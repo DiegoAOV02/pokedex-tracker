@@ -27,7 +27,7 @@ export function PokeCard({ pokemon, isCaught, onToggle }: PokeCardProps) {
         #{pokemon.id.toString().padStart(3, '0')}
       </div>
 
-      <Image src={pokemon.image} alt={pokemon.name} className="w-20 h-20 mx-auto drop-shadow-sm" />
+      <img src={pokemon.image} alt={pokemon.name} className="w-20 h-20 mx-auto drop-shadow-sm" />
 
       <p className="mt-2 text-center capitalize font-bold text-sm text-gray-700">{pokemon.name}</p>
 
