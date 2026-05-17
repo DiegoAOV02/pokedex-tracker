@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { DemoButton } from '@/components/home/DemoButton';
 
 export default function LandingPage() {
   return (
@@ -22,15 +23,13 @@ export default function LandingPage() {
               <Link href="/login">
                 <Button size="lg">Comenzar Ahora</Button>
               </Link>
-              <Button variant="outline" size="lg">
-                Ver Demo
-              </Button>
+              <DemoButton />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Características (How it works) */}
+      {/* (How it works) */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-12">

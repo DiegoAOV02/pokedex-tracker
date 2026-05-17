@@ -1,30 +1,41 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useApp } from '@/context/AppContext';
 
 export function usePokemonTracker(gameId: string) {
-  const [caughtIds, setCaughtIds] = useState<number[]>([]);
+  const { isDemo } = useApp(); // Get demo status
+  // With this const, avoid that the component initialize empty and then 'full'
+  const [caughtIds, setCaughtIds] = useState<number[]>(() => {
+    if (typeof window === 'undefined' || isDemo) return [];
+    const saved = localStorage.getItem(`tracker-${gameId}`);
+    return saved ? JSON.parse(saved) : [];
+  });
 
   // Sync with localStorage at the moment of change game or mount
   useEffect(() => {
-    const saved = localStorage.getItem(`tracker-${gameId}`);
-    const initialData = saved ? JSON.parse(saved) : [];
-
-    // queueMicrotask mueve el setState fuera del cuerpo síncrono del efecto.
     queueMicrotask(() => {
+      if (isDemo) {
+        // If user enter on demo mode, clean the memory state
+        setCaughtIds([]);
+        return;
+      }
+
+      const saved = localStorage.getItem(`tracker-${gameId}`);
+      const initialData = saved ? JSON.parse(saved) : [];
       setCaughtIds(initialData);
     });
-  }, [gameId]);
+  }, [gameId, isDemo]);
 
   const togglePokemon = (id: number) => {
-    // Usamos la forma funcional (prev) para garantizar que siempre
-    // trabajamos con la lista más actualizada de IDs.
     setCaughtIds((prev) => {
       const isAlreadyCaught = prev.includes(id);
       const nextIds = isAlreadyCaught ? prev.filter((pId) => pId !== id) : [...prev, id];
 
-      // Save the new state on localStorage
-      localStorage.setItem(`tracker-${gameId}`, JSON.stringify(nextIds));
+      // Persistencia condicional
+      if (!isDemo) {
+        localStorage.setItem(`tracker-${gameId}`, JSON.stringify(nextIds));
+      }
       return nextIds;
     });
   };
