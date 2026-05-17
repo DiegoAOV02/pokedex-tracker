@@ -1,52 +1,55 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { DemoButton } from '@/components/home/DemoButton';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-32 overflow-hidden bg-slate-50">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <span className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-widest text-blue-600 uppercase bg-blue-50 rounded-full">
-              Tu aventura, organizada
-            </span>
-            <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-tight">
-              Completa tu Pokédex de forma <span className="text-blue-600">profesional</span>
-            </h1>
-            <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-              La herramienta definitiva para entrenadores que buscan el 100%. Gestiona múltiples
-              juegos, visualiza tu progreso en tiempo real y no dejes ni un Pokémon atrás.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/login">
-                <Button size="lg">Comenzar Ahora</Button>
-              </Link>
-              <DemoButton />
-            </div>
+    // bg-white para luz, bg-slate-950 para oscuro
+    <div className="flex flex-col min-h-screen bg-white dark:bg-slate-950 transition-colors duration-500">
+      <ThemeToggle />
+
+      {/* Hero Section: Gradiente de arriba hacia abajo */}
+      <section className="relative pt-32 pb-40 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <div className="container mx-auto px-4 text-center max-w-4xl">
+          <span className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold text-blue-600 dark:text-blue-400 bg-blue-100/50 dark:bg-blue-900/30 rounded-full">
+            Tu aventura, organizada
+          </span>
+          <h1 className="text-6xl md:text-7xl font-black text-slate-900 dark:text-white mb-8">
+            Completa tu Pokédex de forma{' '}
+            <span className="text-blue-600 dark:text-blue-400">profesional</span>
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto">
+            La herramienta definitiva para entrenadores. Gestiona tus juegos y visualiza tu progreso
+            con un diseño moderno.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/login">
+              <Button size="lg">Comenzar Ahora</Button>
+            </Link>
+            <DemoButton />
           </div>
         </div>
       </section>
 
-      {/* (How it works) */}
-      <section className="py-24 bg-white">
+      {/* Características: Gradiente inverso para suavizar la transición */}
+      <section className="py-24 bg-gradient-to-b from-white to-blue-50 dark:from-slate-950 dark:to-slate-900">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
               icon="🎮"
-              title="Soporte Multi-Generación"
-              description="Desde Kanto hasta Paldea. Elige tu versión y comienza a marcar tus capturas de inmediato."
+              title="Multi-Generación"
+              description="Soporte completo desde Kanto hasta Paldea."
             />
             <FeatureCard
               icon="📊"
-              title="Estadísticas Vivas"
-              description="Visualiza tu avance con barras de progreso dinámicas por región y tipo de Pokémon."
+              title="Estadísticas"
+              description="Visualiza tu progreso regional en tiempo real."
             />
             <FeatureCard
-              icon="☁️"
-              title="Sincronización Local"
-              description="Tus datos se guardan automáticamente en tu navegador. Tu progreso siempre está seguro."
+              icon="🌙"
+              title="Modo Oscuro"
+              description="Diseñado para no cansar la vista en sesiones nocturnas."
             />
           </div>
         </div>
@@ -65,10 +68,10 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all duration-300">
+    <div className="p-8 rounded-3xl border border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all">
       <div className="text-4xl mb-6">{icon}</div>
-      <h3 className="text-xl font-bold text-slate-900 mb-4">{title}</h3>
-      <p className="text-slate-600 leading-relaxed">{description}</p>
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{title}</h3>
+      <p className="text-slate-600 dark:text-slate-400">{description}</p>
     </div>
   );
 }
