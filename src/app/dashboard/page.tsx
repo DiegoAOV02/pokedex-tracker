@@ -28,6 +28,13 @@ const GAMES = [
   { id: 'gold-silver', name: 'Gold / Silver / Crystal' },
 ];
 
+// Map each game to the generations it supports
+const GAME_GENERATIONS: Record<string, (1 | 2 | 3)[]> = {
+  'fire-red': [1, 2, 3],
+  'ruby-sapphire': [1, 2, 3],
+  'gold-silver': [1, 2], // Only Gen 1 and 2 are available in GSC
+};
+
 const GEN_CONFIG = {
   1: { limit: 151, offset: 0 },
   2: { limit: 100, offset: 151 },
@@ -42,6 +49,18 @@ export default function DashboardPage() {
 
   const { caughtIds, togglePokemon } = usePokemonTracker(activeGame);
 
+  // Get the available generations for the currently selected game
+  const availableGens = GAME_GENERATIONS[activeGame] || [1];
+
+  const handleGameChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newGame = e.target.value;
+    setActiveGame(newGame);
+
+    if (!GAME_GENERATIONS[newGame].includes(activeGen)) {
+      setActiveGen(GAME_GENERATIONS[newGame][0]);
+    }
+  };
+
   useEffect(() => {
     const fetchPokemonData = async () => {
       setLoading(true);
@@ -51,7 +70,6 @@ export default function DashboardPage() {
           `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
         );
 
-        // Force correct typing from JSON response
         const data: PokeAPIResponse = await response.json();
 
         const formattedData: PokemonData[] = data.results.map((pokemon: PokeAPIResultItem) => {
@@ -86,7 +104,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 md:p-10 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        {/* Game Selector */}
+        {/* Top Game Selector */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
@@ -99,7 +117,7 @@ export default function DashboardPage() {
 
           <select
             value={activeGame}
-            onChange={(e) => setActiveGame(e.target.value)}
+            onChange={handleGameChange}
             className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             {GAMES.map((game) => (
@@ -110,12 +128,12 @@ export default function DashboardPage() {
           </select>
         </div>
 
-        {/* Control panel and Progress Bar */}
+        {/* Control Panel and Progress Bar */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800/80 shadow-sm mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            {/* Generation Tabs */}
+            {/* Generation Tabs - NOW DYNAMIC */}
             <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-950 rounded-xl self-start">
-              {([1, 2, 3] as const).map((gen) => (
+              {availableGens.map((gen) => (
                 <button
                   key={gen}
                   onClick={() => setActiveGen(gen)}
@@ -148,7 +166,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Main View: Skeletons vs Grid Real */}
+        {/* Main View: Skeletons vs Real Grid */}
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {Array.from({ length: 12 }).map((_, index) => (
